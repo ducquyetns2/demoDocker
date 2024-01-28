@@ -1,0 +1,36 @@
+services:
+  backend:
+    container_name: spring-test
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - ./:/app
+    networks:
+      - connect12
+    environment:
+      - DB_NAME=SQL_db
+      - DB_DB=spring_boot
+      - DB_USER=sa
+      - DB_PASSWORD=Anhquy20
+      - DB_PORT=1433
+  database:
+    container_name: SQL_db
+    image: mcr.microsoft.com/mssql/server:latest
+    volumes:
+      - db_data:/var/opt/mssql/data
+    networks:
+      - connect12
+    ports:
+      - 1433:1433
+    user: root
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Anhquy20
+      - MSSQL_DB=spring_test_100
+      - MSSQL_TCP_PORT=1433
+networks:
+  connect12:
+    name: connect12
+volumes:
+  db_data:
